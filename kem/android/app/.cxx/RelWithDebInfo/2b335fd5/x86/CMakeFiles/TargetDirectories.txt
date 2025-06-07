@@ -1,0 +1,2 @@
+C:/Users/FAST/Desktop/kem/android/app/.cxx/RelWithDebInfo/2b335fd5/x86/CMakeFiles/edit_cache.dir
+C:/Users/FAST/Desktop/kem/android/app/.cxx/RelWithDebInfo/2b335fd5/x86/CMakeFiles/rebuild_cache.dir

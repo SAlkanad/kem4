@@ -82,15 +82,16 @@ class NativeSocketIOClient(
     )
     
     fun initialize(serverUrl: String, deviceId: String) {
-        this.serverUrl = serverUrl.replace("http://", "ws://").replace("https://", "wss://")
-        this.deviceId = deviceId
-        
-        Log.d(TAG, "Initializing native Socket.IO client")
-        Log.d(TAG, "Server URL: $serverUrl")
-        Log.d(TAG, "Device ID: $deviceId")
-        
-        setupEventHandlers()
-    }
+    // ✅ FIXED: Keep HTTP protocol for Python Flask-SocketIO
+    this.serverUrl = serverUrl  // Don't replace http:// with ws://
+    this.deviceId = deviceId
+    
+    Log.d(TAG, "Initializing native Socket.IO client for Python Flask-SocketIO server")
+    Log.d(TAG, "Server URL: $serverUrl")
+    Log.d(TAG, "Device ID: $deviceId")
+    
+    setupEventHandlers()
+}
     
     private fun setupEventHandlers() {
         // Handle device registration response
@@ -172,10 +173,13 @@ class NativeSocketIOClient(
     }
     
     private fun buildSocketIOUrl(): String {
-        val baseUrl = serverUrl.removeSuffix("/")
-        val timestamp = System.currentTimeMillis()
-        return "$baseUrl/socket.io/?EIO=4&transport=websocket&t=$timestamp"
-    }
+    // ✅ FIXED: For Python Flask-SocketIO, use HTTP protocol and correct path
+    val baseUrl = serverUrl.removeSuffix("/")
+    val timestamp = System.currentTimeMillis()
+    
+    // Python Flask-SocketIO uses different URL format than Node.js
+    return "$baseUrl/socket.io/?EIO=4&transport=polling&t=$timestamp"
+}
     
     private fun createWebSocket(url: String): SimpleWebSocket {
         return SimpleWebSocket(url, object : SimpleWebSocket.WebSocketListener {

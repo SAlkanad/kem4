@@ -1,0 +1,2 @@
+C:/Users/FAST/Desktop/flutterapp/kem/android/app/.cxx/RelWithDebInfo/qy66136w/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/FAST/Desktop/flutterapp/kem/android/app/.cxx/RelWithDebInfo/qy66136w/arm64-v8a/CMakeFiles/rebuild_cache.dir

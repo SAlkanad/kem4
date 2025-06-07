@@ -126,8 +126,3 @@ dependencies {
     implementation("androidx.preference:preference-ktx:1.2.1")
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 }
-
-// Proguard rules for release builds
-android.buildTypes.getByName("release") {
-    proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-}

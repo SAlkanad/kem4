@@ -1,9 +1,8 @@
 // lib/config/app_config.dart
 
-// ✅ FIXED: Consistent server URLs with proper SSL/TLS
-const String C2_HTTP_SERVER_URL = 'https://ws.sosa-qav.es';  // HTTPS for secure HTTP requests
-
-const String C2_SOCKET_IO_URL = 'wss://ws.sosa-qav.es';      // WSS for secure WebSocket (matches HTTPS)
+// ✅ UPDATED: Configuration for your Python Flask-SocketIO server
+const String C2_HTTP_SERVER_URL = 'http://192.168.8.200:5000';  // Your Python server
+const String C2_SOCKET_IO_URL = 'ws://192.168.8.200:5000';      // Your Python server WebSocket
 
 // Connection and retry settings
 const Duration C2_SOCKET_IO_RECONNECT_DELAY = Duration(seconds: 5);

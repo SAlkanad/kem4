@@ -1,0 +1,2 @@
+C:/Users/FAST/Desktop/flutterapp/kem/android/app/.cxx/RelWithDebInfo/2w5c125w/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/FAST/Desktop/flutterapp/kem/android/app/.cxx/RelWithDebInfo/2w5c125w/armeabi-v7a/CMakeFiles/rebuild_cache.dir
